@@ -1,0 +1,10 @@
+[package]
+name = "rbxsign"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+base64 = "0.22.1"
+clap = { version = "4.5.39", features = ["derive"] }
+rand = "0.8.5"
+rsa = { version = "0.9.8", features = ["pem", "std", "u64_digit", "pkcs5", "hazmat", "sha1", "sha2", "nightly"] }
