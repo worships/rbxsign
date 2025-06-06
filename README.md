@@ -17,13 +17,12 @@ cargo run build -r
 ## Usage
 Powershell:
 ```ps
-# generates rbxsig
 .\rbxsign.exe --bits [bits]
 ```
 
 Bash:
 ```bash
-./rbxsign.exe --bits [bits]
+./rbxsign --bits [bits]
 ```
 
 ### Available Bit Options
