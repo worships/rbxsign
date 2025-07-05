@@ -76,10 +76,31 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         std::process::exit(1);
     }
 
-    let (_priv_key, pub_key) = generate_keypair(args.bits, &args.priv_out, &args.pub_out)?;
+    let suffix = if args.bits == 1024 { "_1024" } else { "_2048" };
+
+    let priv_out = if args.priv_out.ends_with(&format!("{}.pem", suffix)) {
+        args.priv_out.clone()
+    } else {
+        let base = args.priv_out.trim_end_matches(".pem");
+        format!("{}{}.pem", base, suffix)
+    };
+    let pub_out = if args.pub_out.ends_with(&format!("{}.pem", suffix)) {
+        args.pub_out.clone()
+    } else {
+        let base = args.pub_out.trim_end_matches(".pem");
+        format!("{}{}.pem", base, suffix)
+    };
+    let blob_out = if args.blob_out.ends_with(&format!("{}.txt", suffix)) {
+        args.blob_out.clone()
+    } else {
+        let base = args.blob_out.trim_end_matches(".txt");
+        format!("{}{}.txt", base, suffix)
+    };
+
+    let (_priv_key, pub_key) = generate_keypair(args.bits, &priv_out, &pub_out)?;
     let blob = export_csp_public_blob(&pub_key, args.bits / 8);
     let b64_blob = general_purpose::STANDARD.encode(&blob);
-    File::create(&args.blob_out)?.write_all(b64_blob.as_bytes())?;
+    File::create(&blob_out)?.write_all(b64_blob.as_bytes())?;
 
     Ok(())
 }
